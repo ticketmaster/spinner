@@ -1,0 +1,8 @@
+package: spinner
+import:
+- package: github.com/hpcloud/tail
+  version: ^1.0.0
+- package: golang.org/x/sys
+  subpackages:
+  - windows/svc
+  - windows/svc/mgr
