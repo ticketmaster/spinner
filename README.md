@@ -21,7 +21,7 @@ The flags are:
   .\spinner.exe -service W3SVC -path c:\iislog\W3SVC\u_extend1.log
 ```
 
-##Note
+## Note
 
 Spinner will exit if the file does not already exist. Make sure to generate an event
 and flush the buffer immediately or wait for the file to generate before starting
