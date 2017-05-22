@@ -1,5 +1,8 @@
 # Spinner
 
+<img align="right" src="spinner.png" alt="Spinner" />
+
+
 Spinner, A Service Monitor and file tail executable for Windows Containers.
 
 ## Usage
