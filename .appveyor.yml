@@ -4,8 +4,7 @@ image: Visual Studio 2017
 
 install:
   - ps: Start-FileDownload 'https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip'
-  - ps: $pwd; ls
-  - ps: expand-archive glide-v0.12.3-windows-amd64.zip
+  - ps: expand-archive -Path glide-v0.12.3-windows-amd64.zip
   - ps: copy-item .\windows-amd64\glide.exe c:\go\glide.exe
 
 matrix:
