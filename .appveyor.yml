@@ -24,9 +24,6 @@ branches:
 #       tests configuration       #
 #---------------------------------#
 
-before_test:
-  - glide up
-
 test_script:
   - go test --coverprofile=cover.cov
 
@@ -66,5 +63,4 @@ deploy:
     prerelease: false
     tag: spinner-v$(appveyor_build_version)
     on:
-      branch: master
       appveyor_repo_tag: true
