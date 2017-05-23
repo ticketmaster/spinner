@@ -5,7 +5,7 @@ image: Visual Studio 2017
 install:
   - ps: Start-FileDownload 'https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip'
   - ps: expand-archive -Path glide-v0.12.3-windows-amd64.zip
-  - ps: $env:PATH
+  - ps: ls c:\go
   - ps: copy-item .\glide-v0.12.3-windows-amd64\windows-amd64\glide.exe .\glide.exe
 
 matrix:
@@ -30,7 +30,7 @@ test_script:
 #---------------------------------#
 
 before_build:
-  - ps: glide up
+  - ps: .\glide.exe up
 
 build_script:
   - ps: go build  -ldflags "-X main.version=$version" -o "build/spinner$version.exe"
