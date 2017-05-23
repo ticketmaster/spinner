@@ -2,6 +2,8 @@
 
 # Spinner
 
+[![Build status](https://ci.appveyor.com/api/projects/status/1us41ajgvlwu9dcb?svg=true)](https://ci.appveyor.com/project/cdhunt/spinner)
+
 Spinner, A Service Monitor and file tail executable for Windows Containers.
 
 ## Usage
