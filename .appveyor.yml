@@ -40,6 +40,9 @@ before_build:
 build_script:
   - ps: go build  -ldflags "-X main.version=$env:APPVEYOR_BUILD_VERSION" -o "build/spinner$env:APPVEYOR_BUILD_VERSION.exe"
 
+after_build:
+  - ps: Compress-Archive -Path "build/spinner$env:APPVEYOR_BUILD_VERSION.exe" -Destination "build/spinner$env:APPVEYOR_BUILD_VERSION.zip"
+
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
@@ -47,7 +50,7 @@ build_script:
 artifacts:
 
   # pushing a single file
-  - path: build/spinner*.exe
+  - path: build/spinner*.zip
     name: spinner
 
 #---------------------------------#
