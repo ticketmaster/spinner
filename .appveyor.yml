@@ -3,7 +3,8 @@ version: '0.2.{build}'
 image: Visual Studio 2017
 
 install:
-  - ps: (new-object net.webclient).DownloadFile('https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip', 'glide-v0.12.3-windows-amd64.zip')
+  - ps: Start-FileDownload 'https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip'
+  - ps: $pwd; ls
   - ps: expand-archive glide-v0.12.3-windows-amd64.zip
   - ps: copy-item .\windows-amd64\glide.exe c:\go\glide.exe
 
@@ -45,3 +46,20 @@ artifacts:
 
   # pushing a single file
   - path: build/spinner$(version).zip
+    name: zip
+
+#---------------------------------#
+#     deployment configuration    #
+#---------------------------------#
+
+deploy:
+  - provider: GitHub
+    release: myproduct-v$(appveyor_build_version)
+    description: 'Automated Release'
+    artifact: zip
+    draft: false
+    prerelease: false
+    tag: spinner-v$(appveyor_build_version)
+    on:
+      branch: master
+      appveyor_repo_tag: true
