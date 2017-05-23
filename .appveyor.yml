@@ -1,0 +1,47 @@
+version: '0.2.{build}'
+
+image: Visual Studio 2017
+
+install:
+  - ps: (new-object net.webclient).DownloadFile('https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip', 'glide-v0.12.3-windows-amd64.zip')
+  - ps: expand-archive glide-v0.12.3-windows-amd64.zip
+  - ps: copy-item .\windows-amd64\glide.exe c:\go\glide.exe
+
+matrix:
+  fast_finish: true
+
+branches:
+  only:
+    - master
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+
+before_test:
+  - ps: glide up
+
+test_script:
+  - ps: go test --coverprofile=cover.cov
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+before_build:
+  - ps: glide up
+
+build_script:
+  - ps: go build  -ldflags "-X main.version=$version" -o "build/spinner$version.exe"
+
+after_build:
+  - ps: Compress-Archive -Path "build/spinner$version.exe" -Destination "build/spinner$version.zip"
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+
+  # pushing a single file
+  - path: build/spinner$(version).zip
