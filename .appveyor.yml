@@ -2,20 +2,19 @@ version: '0.2.{build}'
 
 image: Visual Studio 2017
 
+clone_folder: C:\gopath\src\github.com\Ticketmaster\src\spinner
+shallow_clone: true
+
 environment:
-  GOPATH: c:\gopath
+  GOPATH: C:\gopat
 
 install:
-  - set PATH=%GOROOT%\bin;%PATH%
   - set PATH=%GOPATH%\bin;%PATH%
-  - ps: New-Item -Path c:\gopath\src\spinner -ItemType SymbolicLink -Value C:\projects\spinner
   - ps: Start-FileDownload 'https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip'
   - ps: Expand-Archive -Path glide-v0.12.3-windows-amd64.zip
-  - go env
   - ps: Copy-Item .\glide-v0.12.3-windows-amd64\windows-amd64\glide.exe .\glide.exe
-
-matrix:
-  fast_finish: true
+  - go version
+  - go env
 
 branches:
   only:
