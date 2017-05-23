@@ -38,7 +38,7 @@ before_build:
   - glide up
 
 build_script:
-  - ps: go build  -ldflags "-X main.version=$version" -o "build/spinner$version.exe"
+  - ps: go build  -ldflags "-X main.version=$env:APPVEYOR_BUILD_VERSION" -o "build/spinner$env:APPVEYOR_BUILD_VERSION.exe"
 
 #---------------------------------#
 #      artifacts configuration    #
