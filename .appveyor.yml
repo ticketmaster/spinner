@@ -56,7 +56,8 @@ artifacts:
 
 deploy:
   provider: GitHub
-  release: myproduct-v$(appveyor_build_version)
+  release: spinner-v$(appveyor_build_version)
+  tag: $(appveyor_repo_tag_name)
   description: Automated Release of v$(appveyor_build_version)
   artifact: spinner
   auth_token:
