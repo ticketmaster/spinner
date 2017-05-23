@@ -18,6 +18,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/hpcloud/tail"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -25,9 +26,21 @@ import (
 
 var cfgFile string
 var tailFile string
+var debugFlag bool
 
 func Kill(err error) {
 	log.Fatal(err)
+}
+
+// TailLog will echo the contents of a given file to stdout.
+func TailLog() {
+	t, err := tail.TailFile(tailFile, tail.Config{ReOpen: true, Follow: true, MustExist: true, Poll: true})
+	if err != nil {
+		log.Fatal("Failed to tail \"", tailFile, "\" ", err)
+	}
+	for line := range t.Lines {
+		fmt.Println(line.Text)
+	}
 }
 
 // RootCmd represents the base command when called without any subcommands
@@ -56,7 +69,6 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	var DebugFlag bool
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
@@ -64,7 +76,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.spinner.yaml)")
 
 	RootCmd.PersistentFlags().StringVarP(&tailFile, "tail", "t", "", "Path to file to tail and pipe to STDOUT")
-	RootCmd.PersistentFlags().BoolVarP(&DebugFlag, "debug", "d", false, "Print debug logging")
+	RootCmd.PersistentFlags().BoolVarP(&debugFlag, "debug", "d", false, "Print debug logging")
 }
 
 // initConfig reads in config file and ENV variables if set.
