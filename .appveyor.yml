@@ -38,7 +38,7 @@ before_build:
   - glide up
 
 build_script:
-  - go build  -ldflags "-X main.version=$version" -o "build/spinner$version.exe"
+  - ps: go build  -ldflags "-X main.version=$version" -o "build/spinner$version.exe"
 
 after_build:
   - ps: Compress-Archive -Path "build/spinner$version.exe" -Destination "build/spinner$version.zip"
