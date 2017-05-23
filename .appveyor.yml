@@ -55,12 +55,11 @@ artifacts:
 #---------------------------------#
 
 deploy:
-  - provider: GitHub
-    release: myproduct-v$(appveyor_build_version)
-    description: 'Automated Release'
-    artifact: spinner
-    draft: false
-    prerelease: false
-    tag: spinner-v$(appveyor_build_version)
-    on:
-      appveyor_repo_tag: true
+  provider: GitHub
+  release: myproduct-v$(appveyor_build_version)
+  description: Automated Release of v$(appveyor_build_version)
+  artifact: spinner
+  auth_token:
+    secure: Ybs71jVRS1MGw7R0K7cck+/ythstsNGBxUnNapldSQzcRQtJqOZOEo6+pfXBzdue
+  on:
+    appveyor_repo_tag: true
