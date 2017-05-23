@@ -5,7 +5,8 @@ image: Visual Studio 2017
 install:
   - ps: Start-FileDownload 'https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip'
   - ps: expand-archive -Path glide-v0.12.3-windows-amd64.zip
-  - ps: copy-item .\glide-v0.12.3-windows-amd64\windows-amd64\glide.exe c:\go\glide.exe
+  - ps: $env:PATH
+  - ps: copy-item .\glide-v0.12.3-windows-amd64\windows-amd64\glide.exe .\glide.exe
 
 matrix:
   fast_finish: true
@@ -19,7 +20,7 @@ branches:
 #---------------------------------#
 
 before_test:
-  - ps: glide up
+  - ps: .\glide.exe up
 
 test_script:
   - ps: go test --coverprofile=cover.cov
