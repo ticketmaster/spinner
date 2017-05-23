@@ -2,11 +2,14 @@ version: '0.2.{build}'
 
 image: Visual Studio 2017
 
+environment:
+  GOPATH: C:\go
+
 install:
   - ps: Start-FileDownload 'https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip'
-  - ps: expand-archive -Path glide-v0.12.3-windows-amd64.zip
-  - ps: ls c:\go
-  - ps: copy-item .\glide-v0.12.3-windows-amd64\windows-amd64\glide.exe .\glide.exe
+  - ps: Expand-Archive -Path glide-v0.12.3-windows-amd64.zip
+  - ps: $env:PATH = $env:PATH + ';C:\go'
+  - ps: Copy-Item .\glide-v0.12.3-windows-amd64\windows-amd64\glide.exe .\glide.exe
 
 matrix:
   fast_finish: true
