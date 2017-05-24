@@ -1,4 +1,4 @@
-// Copyright © 2017 NAME HERE <EMAIL ADDRESS>
+// Copyright © 2017 Ticketmaster
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -91,12 +91,12 @@ func QueryService() {
 var serviceCmd = &cobra.Command{
 	Use:   "service",
 	Short: "Watch a Windows Service",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Long: `Poll the state of a Windows Service and terminate this process if
+State does not equal "Running".
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Use this as the entrypoint for a container to stop the container if
+the given service stops.`,
+	Example: ".\\spinner.exe service w3wp",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("service called")
 		if debugFlag {
