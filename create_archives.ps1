@@ -9,4 +9,4 @@ while ((Get-Location -Stack -StackName build).count -gt 1) {
 
 Pop-Location -StackName build
 
-ls .\build
+ls .\build -rec | select FullName
