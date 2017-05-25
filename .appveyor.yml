@@ -16,16 +16,12 @@ install:
   - go version
   - go env
 
-branches:
-  only:
-    - master
-
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
 
 test_script:
-  - go test --coverprofile=cover.cov
+  - go test .\cmd --coverprofile=cover.cov
 
 #---------------------------------#
 #       build configuration       #
