@@ -59,10 +59,10 @@ func queryPage(u string) {
 
 // siteCmd represents the site command
 var siteCmd = &cobra.Command{
-	Use:        "site [url]",
-	Short:      "Watch a Site",
-	ArgAliases: []string{"url", "address"},
-	Example:    "spinner.exe site http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log",
+	Use:     "site [url]",
+	Short:   "Watch a Site",
+	Aliases: []string{"url", "address"},
+	Example: "spinner.exe site http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log",
 	Long: `Poll Web Site by Get request and terminate this process if
 the a >300 status code is returned.
 
