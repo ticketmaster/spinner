@@ -98,7 +98,7 @@ State does not equal "Running".
 
 Use this as the entrypoint for a container to stop the container if
 the given service stops.`,
-	Example: ".\\spinner.exe service w3wp",
+	Example: "spinner.exe service w3wp",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("service called")
 		if debugFlag {

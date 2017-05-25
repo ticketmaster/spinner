@@ -66,6 +66,7 @@ the a >300 status code is returned.
 Use this as the entrypoint for a container to stop the container if
 the given service stops.`,
 	SuggestFor: []string{"url", "address"},
+	Example:    "spinner.exe site http://localhost",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("site called ")
 		if debugFlag {
