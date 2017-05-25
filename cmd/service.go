@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -56,7 +57,7 @@ func testState(s svc.State) error {
 // QueryService returns the the status of the given service
 // as a uint32. Stopped=1; StartPending=2; StopPending=3; Running=4
 // ContinuePending=5; PausePending=6; Paused=7
-func QueryService() {
+func QueryService(s string) {
 
 	manager, err := mgr.Connect()
 
@@ -67,7 +68,7 @@ func QueryService() {
 
 	for {
 
-		service, err := manager.OpenService(serviceFlag)
+		service, err := manager.OpenService(s)
 		if err != nil {
 			log.Fatal("service does not exist:", err)
 		}
@@ -91,23 +92,23 @@ func QueryService() {
 
 // serviceCmd represents the service command
 var serviceCmd = &cobra.Command{
-	Use:     "service",
+	Use:     "service [name]",
 	Short:   "Watch a Windows Service",
-	Example: "spinner.exe service -n W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log",
+	Example: "spinner.exe service W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log",
 	Long: `Poll the state of a Windows Service and terminate this process if
 State does not equal "Running".
 
 Use this as the entrypoint for a container to stop the container if
 the given service stops.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("service called")
+		if len(args) < 1 {
+			fmt.Println("service needs a name for the command")
+			os.Exit(1)
+		}
 		if debugFlag {
 			fmt.Println("with debug")
 		}
-		if serviceFlag != "" {
-			fmt.Println("service: ", serviceFlag)
-		}
-		go QueryService()
+		go QueryService(args[0])
 		TailLog()
 	},
 }
@@ -115,5 +116,5 @@ the given service stops.`,
 func init() {
 	RootCmd.AddCommand(serviceCmd)
 
-	serviceCmd.Flags().StringVarP(&serviceFlag, "name", "n", "", "Service name to Watch")
+	//serviceCmd.Flags().StringVarP(&serviceFlag, "name", "n", "", "Service name to Watch")
 }

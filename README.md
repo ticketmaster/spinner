@@ -28,8 +28,8 @@ Flags:
 ## Examples
 
 ```powershell
-  spinner.exe service -n W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
-  spinner.exe site -u http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log
+  spinner.exe service W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
+  spinner.exe site http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log
 ```
 
 ## Note

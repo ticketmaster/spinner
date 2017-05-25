@@ -51,8 +51,8 @@ var RootCmd = &cobra.Command{
 where the process can't be invoked directly. This ensures that if the service stops
 the container will terminate and your container orchestration can take necessary
 steps to restart the application.`,
-	Example: `spinner.exe service -n W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
-spinner.exe site -u http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log`,
+	Example: `spinner.exe service W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
+spinner.exe site http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log`,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.

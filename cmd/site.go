@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	s "strings"
 	"time"
 
@@ -25,14 +26,14 @@ import (
 
 var urlFlag string
 
-func queryPage() {
+func queryPage(u string) {
 
 	var fullURL string
 
-	if s.HasPrefix(urlFlag, "http://") || s.HasPrefix(urlFlag, "https://") {
-		fullURL = urlFlag
+	if s.HasPrefix(u, "http://") || s.HasPrefix(u, "https://") {
+		fullURL = u
 	} else {
-		fullURL = "http://" + urlFlag
+		fullURL = "http://" + u
 	}
 
 	fmt.Println("Full URL being monitored:", fullURL)
@@ -58,24 +59,27 @@ func queryPage() {
 
 // siteCmd represents the site command
 var siteCmd = &cobra.Command{
-	Use:        "site",
+	Use:        "site [url]",
 	Short:      "Watch a Site",
-	SuggestFor: []string{"url", "address"},
-	Example:    "spinner.exe site -u http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log",
+	ArgAliases: []string{"url", "address"},
+	Example:    "spinner.exe site http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log",
 	Long: `Poll Web Site by Get request and terminate this process if
 the a >300 status code is returned.
 
 Use this as the entrypoint for a container to stop the container if
 the given service stops.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("site called ")
+		if len(args) < 1 {
+			fmt.Println("site needs a url for the command")
+			os.Exit(1)
+		}
 		if debugFlag {
 			fmt.Println("with debug")
 		}
 		if urlFlag != "" {
 			fmt.Println("url: ", urlFlag)
 		}
-		go queryPage()
+		go queryPage(args[0])
 		TailLog()
 	},
 }
@@ -83,6 +87,6 @@ the given service stops.`,
 func init() {
 	RootCmd.AddCommand(siteCmd)
 
-	siteCmd.Flags().StringVarP(&urlFlag, "url", "u", "http://localhost/", "Url to watch")
+	//siteCmd.Flags().StringVarP(&urlFlag, "url", "u", "http://localhost/", "Url to watch")
 
 }
