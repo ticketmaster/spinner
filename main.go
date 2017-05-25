@@ -13,7 +13,7 @@
 
 package main
 
-import "spinner/cmd"
+import "github.com/Ticketmaster/spinner/cmd"
 
 func main() {
 	cmd.Execute()
