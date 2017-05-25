@@ -32,7 +32,7 @@ before_build:
   - glide up
 
 build_script:
-  - ps: gox.exe -os="windows" -os="linux" -ldflags="-X cmd.version=$env:APPVEYOR_BUILD_VERSION" -output="./build/{{.OS}}_{{.Arch}}/spinner_v$env:APPVEYOR_BUILD_VERSION"
+  - ps: gox.exe -os="windows" -os="linux" -arch="amd64" -ldflags="-X cmd.version=$env:APPVEYOR_BUILD_VERSION" -output="./build/{{.OS}}_{{.Arch}}/spinner_v$env:APPVEYOR_BUILD_VERSION"
 
 after_build:
   - ps: .\create_archives.ps1
