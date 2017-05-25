@@ -9,20 +9,27 @@ Spinner, A Service Monitor and file tail executable for Windows Containers.
 ## Usage
 
 ```text
-  spinner.exe flags
-The flags are:
-  --service <name>    Service name to Watch
-  --path <path>       Path to log file to tail
-  --usage             Print usage
-  --debug             Print debug logging
-  --version           Print version of this binary
+spinner [command]
+
+Available Commands:
+  help        Help about any command
+  service     Watch a Windows Service
+  site        Watch a Site
+  version     All software has versions. This is Spinner's.
+
+Flags:
+      --config string   config file (default is $HOME/.spinner.yaml)
+  -d, --debug           Print debug logging
+  -h, --help            help for spinner
+  -t, --tail string     Path to file to tail and pipe to STDOUT. REQUIRED
 ```
+
 
 ## Examples
 
 ```powershell
-  # Watch IIS and tail the access log:
-  .\spinner.exe -service W3SVC -path c:\iislog\W3SVC\u_extend1.log
+  spinner.exe service -n W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
+  spinner.exe site -u http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log
 ```
 
 ## Note
@@ -35,5 +42,7 @@ Spinner.
   CMD Start-Service W3SVC; `
     Invoke-WebRequest http://localhost -UseBasicParsing | Out-Null; `
     netsh http flush logbuffer | Out-Null; `
-    spinner.exe -service W3SVC -path c:\iislog\W3SVC\u_extend1.log
+    spinner.exe service -n W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
 ```
+
+The Linux build is experimental and does not include the `service` command.

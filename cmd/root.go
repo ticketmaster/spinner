@@ -51,8 +51,8 @@ var RootCmd = &cobra.Command{
 where the process can't be invoked directly. This ensures that if the service stops
 the container will terminate and your container orchestration can take necessary
 steps to restart the application.`,
-	Example: `spinner.exe service w3wp
-spinner.exe site http://localhost`,
+	Example: `spinner.exe service -n W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
+spinner.exe site -u http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log`,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -69,7 +69,7 @@ func init() {
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.spinner.yaml)")
 
-	RootCmd.PersistentFlags().StringVarP(&tailFile, "tail", "t", "", "Path to file to tail and pipe to STDOUT")
+	RootCmd.PersistentFlags().StringVarP(&tailFile, "tail", "t", "", "Path to file to tail and pipe to STDOUT. REQUIRED")
 	RootCmd.PersistentFlags().BoolVarP(&debugFlag, "debug", "d", false, "Print debug logging")
 }
 

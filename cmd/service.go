@@ -91,14 +91,14 @@ func QueryService() {
 
 // serviceCmd represents the service command
 var serviceCmd = &cobra.Command{
-	Use:   "service",
-	Short: "Watch a Windows Service",
+	Use:     "service",
+	Short:   "Watch a Windows Service",
+	Example: "spinner.exe service -n W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log",
 	Long: `Poll the state of a Windows Service and terminate this process if
 State does not equal "Running".
 
 Use this as the entrypoint for a container to stop the container if
 the given service stops.`,
-	Example: "spinner.exe service w3wp",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("service called")
 		if debugFlag {

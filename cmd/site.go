@@ -58,15 +58,15 @@ func queryPage() {
 
 // siteCmd represents the site command
 var siteCmd = &cobra.Command{
-	Use:   "site",
-	Short: "Watch a Site",
+	Use:        "site",
+	Short:      "Watch a Site",
+	SuggestFor: []string{"url", "address"},
+	Example:    "spinner.exe site -u http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log",
 	Long: `Poll Web Site by Get request and terminate this process if
 the a >300 status code is returned.
 
 Use this as the entrypoint for a container to stop the container if
 the given service stops.`,
-	SuggestFor: []string{"url", "address"},
-	Example:    "spinner.exe site http://localhost",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("site called ")
 		if debugFlag {

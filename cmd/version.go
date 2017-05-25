@@ -24,7 +24,7 @@ var version = "1.0.0"
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "All software has versions. This is Spinners's.",
+	Short: "All software has versions. This is Spinner's.",
 
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("spinner v%s\n", version)
