@@ -1,7 +1,9 @@
 package: spinner
 import:
 - package: github.com/hpcloud/tail
-  version: ^1.0.0
+- package: github.com/mitchellh/go-homedir
+- package: github.com/spf13/cobra
+- package: github.com/spf13/viper
 - package: golang.org/x/sys
   subpackages:
   - windows/svc
