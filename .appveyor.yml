@@ -13,6 +13,7 @@ install:
   - ps: Start-FileDownload 'https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-windows-amd64.zip'
   - ps: Expand-Archive -Path glide-v0.12.3-windows-amd64.zip
   - ps: Copy-Item .\glide-v0.12.3-windows-amd64\windows-amd64\glide.exe .\glide.exe
+  - go get github.com/mitchellh/gox
   - go version
   - go env
 
@@ -31,10 +32,10 @@ before_build:
   - glide up
 
 build_script:
-  - ps: go build  -ldflags "-X main.version=$env:APPVEYOR_BUILD_VERSION" -o "build/spinner$env:APPVEYOR_BUILD_VERSION.exe"
+  - ps: gox.exe -os="windows" -os="linux" -ldflags="-X cmd.version=$env:APPVEYOR_BUILD_VERSION" -output="./build/{{.OS}}_{{.Arch}}/spinner_v$env:APPVEYOR_BUILD_VERSION" -parallel=1
 
 after_build:
-  - ps: Compress-Archive -Path "build/spinner$env:APPVEYOR_BUILD_VERSION.exe" -Destination "build/spinner$env:APPVEYOR_BUILD_VERSION.zip"
+  - ps: .\create_archives.ps1
 
 #---------------------------------#
 #      artifacts configuration    #
