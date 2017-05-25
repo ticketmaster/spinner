@@ -5,5 +5,3 @@ while ((Get-Location -Stack -StackName build -ErrorAction SilentlyContinue).coun
     Compress-Archive .\spinner* "..\spinner_$osarch-v$env:APPVEYOR_BUILD_VERSION.zip"
     Pop-Location -StackName build
 }
-
-Pop-Location -StackName build
