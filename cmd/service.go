@@ -86,7 +86,7 @@ func QueryService(s string) {
 
 		if stateError != nil {
 			fmt.Printf("service status: %s\n", stateError)
-			os.Exit(1)
+			os.Exit(10)
 		}
 
 		time.Sleep(1000 * time.Millisecond)
@@ -123,5 +123,4 @@ the given service stops.`,
 func init() {
 	RootCmd.AddCommand(serviceCmd)
 
-	//serviceCmd.Flags().StringVarP(&serviceFlag, "name", "n", "", "Service name to Watch")
 }
