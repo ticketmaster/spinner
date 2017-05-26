@@ -42,7 +42,7 @@ Spinner.
   CMD Start-Service W3SVC; `
     Invoke-WebRequest http://localhost -UseBasicParsing | Out-Null; `
     netsh http flush logbuffer | Out-Null; `
-    spinner.exe service -n W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
+    spinner.exe service W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
 ```
 
 The Linux build is experimental and does not include the `service` command.
