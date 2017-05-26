@@ -70,20 +70,23 @@ func QueryService(s string) {
 
 		service, err := manager.OpenService(s)
 		if err != nil {
-			log.Fatal("service does not exist:", err)
+			fmt.Printf("service does not exist: %s\n", err)
+			os.Exit(2)
 		}
 		defer service.Close()
 
 		var status svc.Status
 		status, err = service.Query()
 		if err != nil {
-			log.Fatal("failed to get service status: ", err)
+			fmt.Printf("failed to get service status: %s\n", err)
+			os.Exit(3)
 		}
 
 		stateError := testState(status.State)
 
-		if err != nil {
-			Kill(stateError)
+		if stateError != nil {
+			fmt.Printf("service status: %s\n", stateError)
+			os.Exit(1)
 		}
 
 		time.Sleep(1000 * time.Millisecond)
@@ -105,11 +108,15 @@ the given service stops.`,
 			fmt.Println("service needs a name for the command")
 			os.Exit(1)
 		}
+		if tailFile != "" {
+			go TailLog()
+		}
 		if debugFlag {
 			fmt.Println("with debug")
 		}
-		go QueryService(args[0])
-		TailLog()
+
+		QueryService(args[0])
+
 	},
 }
 

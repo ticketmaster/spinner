@@ -76,11 +76,12 @@ the given service stops.`,
 		if debugFlag {
 			fmt.Println("with debug")
 		}
-		if urlFlag != "" {
-			fmt.Println("url: ", urlFlag)
+		if tailFile != "" {
+			go TailLog()
 		}
-		go queryPage(args[0])
-		TailLog()
+
+		queryPage(args[0])
+
 	},
 }
 

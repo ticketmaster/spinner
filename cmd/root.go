@@ -15,7 +15,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/hpcloud/tail"
@@ -28,15 +27,18 @@ var cfgFile string
 var tailFile string
 var debugFlag bool
 
-func Kill(err error) {
-	log.Fatal(err)
-}
+//func Kill(err error) {
+//	log.Fatal(err)
+//}
 
 // TailLog will echo the contents of a given file to stdout.
 func TailLog() {
 	t, err := tail.TailFile(tailFile, tail.Config{ReOpen: true, Follow: true, MustExist: true, Poll: true})
 	if err != nil {
-		log.Fatal("Failed to tail \"", tailFile, "\" ", err)
+		fmt.Printf("Failed to tail \"%s\": %s\n", tailFile, err)
+		os.Exit(4)
+		//log.Fatal("Failed to tail \"", tailFile, "\" ", err)
+
 	}
 	for line := range t.Lines {
 		fmt.Println(line.Text)
@@ -69,7 +71,7 @@ func init() {
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.spinner.yaml)")
 
-	RootCmd.PersistentFlags().StringVarP(&tailFile, "tail", "t", "", "Path to file to tail and pipe to STDOUT. REQUIRED")
+	RootCmd.PersistentFlags().StringVarP(&tailFile, "tail", "t", "", "Path to file to tail and pipe to STDOUT.")
 	RootCmd.PersistentFlags().BoolVarP(&debugFlag, "debug", "d", false, "Print debug logging")
 }
 
