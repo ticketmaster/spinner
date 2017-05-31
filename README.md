@@ -13,6 +13,7 @@ spinner [command]
 
 Available Commands:
   help        Help about any command
+  iis         Watch IIS Website(s) and Application Pool(s)
   service     Watch a Windows Service
   site        Watch a Site
   version     All software has versions. This is Spinner's.
@@ -28,12 +29,16 @@ Service Usage:
 
 Site Usage:
   spinner site [url] [flags]
+
+IIS Usage:
+  spinner iis [flags]
 ```
 
 
 ## Examples
 
 ```powershell
+  spinner.exe iis -t c:\\iislog\\W3SVC\\u_extend1.log
   spinner.exe service W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
   spinner.exe site http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log
 ```
@@ -51,4 +56,4 @@ Spinner.
     spinner.exe service W3SVC -t c:\\iislog\\W3SVC\\u_extend1.log
 ```
 
-The Linux build is experimental and does not include the `service` command.
+The Linux build is experimental and does not include the `service` or `iis` commands.
