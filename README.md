@@ -22,6 +22,12 @@ Flags:
   -d, --debug           Print debug logging
   -h, --help            help for spinner
   -t, --tail string     Path to file to tail and pipe to STDOUT.
+
+Service Usage:
+  spinner service [name] [flags]
+
+Site Usage:
+  spinner site [url] [flags]
 ```
 
 
