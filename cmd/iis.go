@@ -47,26 +47,30 @@ func iis() {
 	for {
 
 		s := appcmd("SITE")
-		match, _ := regexp.MatchString("(state:)(Started)", s)
+		ss := bufio.NewScanner(strings.NewReader(s))
 
-		if match != true {
-			fmt.Println("Website not in a running state")
-			log.Fatal("Current state:", s)
-		} else if debugFlag {
-			fmt.Println("Current state:", s)
+		for ss.Scan() {
+			sm, _ := regexp.MatchString("(state:)(Started)", ss.Text())
+
+			if sm != true {
+				fmt.Println("Website not in a running state!")
+				log.Fatal("Current site state:", ss.Text())
+			} else if debugFlag {
+				fmt.Println("Current site state:", ss.Text())
+			}
 		}
 
 		p := appcmd("APPPOOL")
-		scanner := bufio.NewScanner(strings.NewReader(p))
+		ps := bufio.NewScanner(strings.NewReader(p))
 
-		for scanner.Scan() {
-			match, _ := regexp.MatchString("(state:)(Started)", scanner.Text())
+		for ps.Scan() {
+			pm, _ := regexp.MatchString("(state:)(Started)", ps.Text())
 
-			if match != true {
-				fmt.Println("App pool not in a running state")
-				log.Fatal("Current state:", scanner.Text())
+			if pm != true {
+				fmt.Println("Application pool not in a running state!")
+				log.Fatal("Current app pool state:", ps.Text())
 			} else if debugFlag {
-				fmt.Println("Current state:", scanner.Text())
+				fmt.Println("Current app pool state:", ps.Text())
 			}
 		}
 
