@@ -15,6 +15,7 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -45,8 +46,14 @@ func queryPage(u string) {
 			log.Fatal("An error occurred during the request:", err)
 		}
 
-		if resp.StatusCode != 200 {
-			log.Fatal("Status code != 200")
+		if resp.StatusCode >= 300 {
+			rd, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+			// Convert rd to string and remove line breaks to output on single line
+			rs := s.Replace(string(rd), "\r\n", "", -1)
+			log.Fatalf("Status Code: %v Body: %s", resp.StatusCode, rs)
 		} else if debugFlag {
 			log.Println("Status Code:", resp.StatusCode)
 		}
