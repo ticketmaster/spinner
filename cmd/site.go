@@ -51,8 +51,10 @@ func queryPage(u string) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			// Convert rd to string and remove line breaks to output on single line
-			rs := s.Replace(string(rd), "\r\n", "", -1)
+			// Convert rd to string and remove carriage returns from output
+			rs := s.Replace(string(rd), "\r", "", -1)
+			// Remove line feeds from output
+			rs = s.Replace(rs, "\n", "", -1)
 			log.Fatalf("Status Code: %v Body: %s", resp.StatusCode, rs)
 		} else if debugFlag {
 			log.Println("Status Code:", resp.StatusCode)
