@@ -55,7 +55,11 @@ func queryPage(u string) {
 			rs := s.Replace(string(rd), "\r", "", -1)
 			// Remove line feeds from output
 			rs = s.Replace(rs, "\n", "", -1)
-			log.Fatalf("Status Code: %v Body: %s", resp.StatusCode, rs)
+			log.Printf("Status Code: %v Body: %s", resp.StatusCode, rs)
+			// Sleep for 1 second allowing output error to Stdout to be picked up 
+			// by logging container.
+			time.Sleep(1000 * time.Millisecond)
+			os.Exit(1)
 		} else if debugFlag {
 			log.Println("Status Code:", resp.StatusCode)
 		}
