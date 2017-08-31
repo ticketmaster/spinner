@@ -19,6 +19,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	s "strings"
 	"time"
 
@@ -27,8 +28,8 @@ import (
 
 var urlFlag string
 
-func queryPage(u string) {
-
+func queryPage(u, cl, tte string) {
+	var c int64
 	var fullURL string
 
 	if s.HasPrefix(u, "http://") || s.HasPrefix(u, "https://") {
@@ -38,7 +39,17 @@ func queryPage(u string) {
 	}
 
 	fmt.Println("Full URL being monitored:", fullURL)
+	fmt.Println("Counter limit:", cl)
 	for {
+		cl, err := strconv.ParseInt(cl, 10, 8)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tte, err := strconv.ParseInt(tte, 10, 8)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		resp, err := http.Get(fullURL)
 
@@ -47,37 +58,50 @@ func queryPage(u string) {
 		}
 
 		if resp.StatusCode >= 300 {
-			rd, err := ioutil.ReadAll(resp.Body)
-			if err != nil {
-				log.Fatal(err)
+			c++
+			if c >= cl {
+				rd, err := ioutil.ReadAll(resp.Body)
+				if err != nil {
+					log.Fatal(err)
+				}
+				// Convert rd to string and remove carriage returns from output
+				rs := s.Replace(string(rd), "\r", "", -1)
+				// Remove line feeds from output
+				rs = s.Replace(rs, "\n", "", -1)
+				fmt.Printf("Spinner exiting... Status Code: %v Body: %s", resp.StatusCode, rs)
+				// Sleep for 10 seconds allowing output error to Stdout to be picked up
+				// by logging container.
+				time.Sleep(time.Duration(tte) * time.Second)
+				os.Exit(1)
+			} else {
+				log.Println("Status Code:", resp.StatusCode, "Counter count:", c)
 			}
-			// Convert rd to string and remove carriage returns from output
-			rs := s.Replace(string(rd), "\r", "", -1)
-			// Remove line feeds from output
-			rs = s.Replace(rs, "\n", "", -1)
-			fmt.Printf("Status Code: %v Body: %s", resp.StatusCode, rs)
-			// Sleep for 10 seconds allowing output error to Stdout to be picked up
-			// by logging container.
-			time.Sleep(15000 * time.Millisecond)
-			os.Exit(1)
 		} else if debugFlag {
+			c = 0
 			log.Println("Status Code:", resp.StatusCode)
 		}
 
 		resp.Body.Close()
 
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(1 * time.Second)
 	}
 }
 
 // siteCmd represents the site command
 var siteCmd = &cobra.Command{
-	Use:     "site [url]",
+	Use:     "site [url] [counter limit] [time to exit]",
 	Short:   "Watch a Site",
 	Aliases: []string{"url", "address"},
 	Example: "spinner.exe site http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log",
 	Long: `Poll Web Site by Get request and terminate this process if
 the a >300 status code is returned.
+
+Counter Limit (default 1) is the number of times the site being monitored can
+be down before spinner exits.
+
+Time to Exit (default 1) is the time (in seconds) after the response body is
+logged to stdout before spinner will shutdown. This can be useful
+if the monitoring software does not catch the error quick enough.
 
 Use this as the entrypoint for a container to stop the container if
 the given service stops.`,
@@ -92,9 +116,13 @@ the given service stops.`,
 		if tailFile != "" {
 			go TailLog()
 		}
-
-		queryPage(args[0])
-
+		if len(args) == 1 {
+			queryPage(args[0], "1", "1")
+		} else if len(args) == 2 {
+			queryPage(args[0], args[1], "1")
+		} else {
+			queryPage(args[0], args[1], args[2])
+		}
 	},
 }
 

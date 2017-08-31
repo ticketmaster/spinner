@@ -27,7 +27,7 @@ Service Usage:
   spinner service [name] [flags]
 
 Site Usage:
-  spinner site [url] [flags]
+  spinner site [url] [counter limit] [time to exit] [flags]
 ```
 
 
