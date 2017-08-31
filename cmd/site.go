@@ -68,7 +68,7 @@ func queryPage(u, cl, tte string) {
 				rs := s.Replace(string(rd), "\r", "", -1)
 				// Remove line feeds from output
 				rs = s.Replace(rs, "\n", "", -1)
-				fmt.Printf("Spinner exiting... Status Code: %v Body: %s", resp.StatusCode, rs)
+				log.Println("Spinner exiting... Status Code:", resp.StatusCode, " Body:", rs)
 				// Sleep for n second(s) allowing output error to stdout to be picked up
 				// by monitoring software/container (if needed)
 				time.Sleep(time.Duration(tte) * time.Second)
