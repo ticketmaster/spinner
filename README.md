@@ -21,7 +21,8 @@ Flags:
       --config string   config file (default is $HOME/.spinner.yaml)
   -d, --debug           Print debug logging
   -h, --help            help for spinner
-  -t, --tail string     Path to file to tail and pipe to STDOUT.
+  -t, --tail string     Path to file to tail and pipe to STDOUT
+  -o, --out             Path to file to write large errors to
 
 Service Usage:
   spinner service [name] [flags]

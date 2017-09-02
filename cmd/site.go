@@ -14,11 +14,13 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	s "strings"
 	"time"
@@ -38,8 +40,7 @@ func queryPage(u, cl, tte string) {
 		fullURL = "http://" + u
 	}
 
-	fmt.Println("Full URL being monitored:", fullURL)
-	fmt.Println("Counter limit:", cl)
+	log.Println("Full URL being monitored:", fullURL, "Counter limit:", cl)
 	for {
 		cl, err := strconv.ParseInt(cl, 10, 8)
 		if err != nil {
@@ -52,7 +53,6 @@ func queryPage(u, cl, tte string) {
 		}
 
 		resp, err := http.Get(fullURL)
-
 		if err != nil {
 			log.Fatal("An error occurred during the request:", err)
 		}
@@ -68,11 +68,36 @@ func queryPage(u, cl, tte string) {
 				rs := s.Replace(string(rd), "\r", "", -1)
 				// Remove line feeds from output
 				rs = s.Replace(rs, "\n", "", -1)
-				log.Println("Spinner exiting... Status Code:", resp.StatusCode, " Body:", rs)
+
+				// Output to file if path is set
+				if outFile != "" {
+					d, _ := filepath.Split(outFile)
+					err := os.MkdirAll(d, os.ModePerm)
+					if err != nil {
+						panic(err)
+					}
+
+					f, err := os.OpenFile(outFile, os.O_RDWR|os.O_APPEND, 0660)
+					if err != nil {
+						panic(err)
+					}
+					defer f.Close()
+
+					w := bufio.NewWriter(f)
+					_, err = fmt.Fprintf(w, "%v %s\n", time.Now().Format("2006/01/02 15:04:05"), rs)
+					if err != nil {
+						panic(err)
+					}
+
+					w.Flush()
+				}
+
+				// Output to stdout
+				log.Println("Status Code:", resp.StatusCode, " Body:", rs)
 				// Sleep for n second(s) allowing output error to stdout to be picked up
 				// by monitoring software/container (if needed)
 				time.Sleep(time.Duration(tte) * time.Second)
-				os.Exit(1)
+				log.Fatalln("Spinner shutting down, status code was:", resp.StatusCode)
 			} else {
 				log.Println("Status Code:", resp.StatusCode, "Counter count:", c)
 			}
@@ -92,9 +117,9 @@ var siteCmd = &cobra.Command{
 	Use:     "site [url] [counter limit] [time to exit]",
 	Short:   "Watch a Site",
 	Aliases: []string{"url", "address"},
-	Example: "spinner.exe site http://localhost -t c:\\iislog\\W3SVC\\u_extend1.log",
-	Long: `Poll Web Site by Get request and terminate this process if
-the a >300 status code is returned.
+	Example: "spinner.exe site http://localhost 5 5 -t c:\\iislog\\W3SVC\\u_extend1.log -o c:\\logs\\spinner.log",
+	Long: `Poll Web Site by Get request and terminate this process if the a >300
+status code is returned.
 
 Counter Limit (default 1) is the number of times the site being monitored can
 be down before spinner exits.
