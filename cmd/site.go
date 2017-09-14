@@ -85,7 +85,7 @@ func queryPage(u, cl, tte string) {
 					defer f.Close()
 
 					w := bufio.NewWriter(f)
-					_, err = fmt.Fprintln(w, time.Now().Format("2006/01/02 15:04:05")+rs)
+					_, err = fmt.Fprintln(w, time.Now().Format("2006/01/02 15:04:05 ")+rs)
 					if err != nil {
 						panic(err)
 					}
