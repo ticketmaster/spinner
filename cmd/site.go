@@ -78,19 +78,19 @@ func queryPage(u, cl, tte string) {
 						panic(err)
 					}
 
-					f, err := os.OpenFile(outFile, os.O_APPEND|os.O_CREATE, 0666)
+					f, err := os.OpenFile(outFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 					if err != nil {
 						panic(err)
 					}
 					defer f.Close()
 
-					w := bufio.NewWriter(f)
-					_, err = fmt.Fprintln(w, time.Now().Format("2006/01/02 15:04:05 ")+rs)
-					if err != nil {
-						panic(err)
-					}
+					ls := time.Now().Format("2006/01/02 15:04:05") + " [spinner-app] " + rs + "\n"
 
-					w.Flush()
+					b := bufio.NewWriterSize(f, 4000)
+					_, err = b.WriteString(ls)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 
 				// Output to stdout
