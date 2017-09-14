@@ -41,6 +41,7 @@ func queryPage(u, cl, tte string) {
 	}
 
 	log.Println("Full URL being monitored:", fullURL, "Counter limit:", cl)
+
 	for {
 		cl, err := strconv.ParseInt(cl, 10, 8)
 		if err != nil {
@@ -77,14 +78,14 @@ func queryPage(u, cl, tte string) {
 						panic(err)
 					}
 
-					f, err := os.OpenFile(outFile, os.O_RDWR|os.O_APPEND, 0660)
+					f, err := os.OpenFile(outFile, os.O_APPEND|os.O_CREATE, 0666)
 					if err != nil {
 						panic(err)
 					}
 					defer f.Close()
 
 					w := bufio.NewWriter(f)
-					_, err = fmt.Fprintf(w, "%v %s\n", time.Now().Format("2006/01/02 15:04:05"), rs)
+					_, err = fmt.Fprintln(w, time.Now().Format("2006/01/02 15:04:05")+rs)
 					if err != nil {
 						panic(err)
 					}
