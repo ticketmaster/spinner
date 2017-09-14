@@ -129,6 +129,10 @@ Time to Exit (default 1) is the time (in seconds) after the response body is
 logged to stdout before spinner will shutdown. This can be useful
 if the monitoring software does not catch the error quick enough.
 
+OutFile is the location path to a file to write out the response body if
+the response status is >= 300. This can be useful in troubleshooting why
+the application is exiting.
+
 Use this as the entrypoint for a container to stop the container if
 the given service stops.`,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -22,7 +22,7 @@ Flags:
   -d, --debug           Print debug logging
   -h, --help            help for spinner
   -t, --tail string     Path to file to tail and pipe to STDOUT
-  -o, --out             Path to file to write response body if spinner exits
+  -o, --out             Path to file to write response body if site response status >= 300
 
 Service Usage:
   spinner service [name] [flags]
