@@ -86,8 +86,13 @@ func queryPage(u, cl, tte string) {
 
 					ls := time.Now().Format("2006-01-02 15:04:05") + " [spinner-app] " + rs + "\n"
 
-					b := bufio.NewWriterSize(f, 10000)
+					b := bufio.NewWriterSize(f, 4000)
 					_, err = b.WriteString(ls)
+					if err != nil {
+						log.Println(err)
+					}
+
+					err = b.Flush()
 					if err != nil {
 						log.Println(err)
 					}
