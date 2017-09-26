@@ -25,6 +25,7 @@ import (
 
 var cfgFile string
 var tailFile string
+var outFile string
 var debugFlag bool
 
 //func Kill(err error) {
@@ -72,6 +73,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.spinner.yaml)")
 
 	RootCmd.PersistentFlags().StringVarP(&tailFile, "tail", "t", "", "Path to file to tail and pipe to STDOUT.")
+	RootCmd.PersistentFlags().StringVarP(&outFile, "out", "o", "", "Path to file to write errors out to.")
 	RootCmd.PersistentFlags().BoolVarP(&debugFlag, "debug", "d", false, "Print debug logging")
 }
 
