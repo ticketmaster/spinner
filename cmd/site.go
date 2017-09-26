@@ -53,7 +53,14 @@ func queryPage(u, cl, tte string) {
 			log.Fatal(err)
 		}
 
-		resp, err := http.Get(fullURL)
+		// Set 30 second timeout for page GET
+		tr := &http.Transport{
+			IdleConnTimeout:    30 * time.Second,
+			DisableCompression: true,
+		}
+
+		client := &http.Client{Transport: tr}
+		resp, err := client.Get(fullURL)
 		if err != nil {
 			log.Fatal("An error occurred during the request:", err)
 		}
